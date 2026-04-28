@@ -4,7 +4,7 @@
   "description": "A tabletop RPG system of dangerous operatives and shifting reality.",
   "version": "0.1.0",
   "url": "https://github.com/HlynurM/void-glitch-vtt",
-  "manifest": "https://raw.githubusercontent.com/HlynurM/void-glitch-vtt/main/system.json",
+  "manifest": "https://raw.githubusercontent.com/HlynurM/void-glitch-vtt/main/system/system.json",
   "download": "https://github.com/HlynurM/void-glitch-vtt/archive/refs/heads/main.zip",
   "compatibility": {
     "minimum": "11",
