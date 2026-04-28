@@ -1,0 +1,292 @@
+/* VOID // GLITCH Base Styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;500&display=swap');
+
+.voidglitch.sheet.actor {
+  min-width: 600px;
+  min-height: 500px;
+  font-family: 'Roboto Mono', monospace;
+  background: #111;
+  color: #e0e0e0;
+}
+
+.voidglitch.sheet.actor .window-content {
+  background: #111;
+  color: #e0e0e0;
+  padding: 10px;
+  border: 1px solid #444;
+}
+
+/* Typography */
+.voidglitch h1, .voidglitch h2, .voidglitch h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: #00ffcc;
+  text-transform: uppercase;
+  border-bottom: 1px solid #00ffcc;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+/* Headers */
+.voidglitch .sheet-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.voidglitch .profile-img {
+  flex: 0 0 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 2px solid #00ffcc;
+  margin-right: 15px;
+  background: #000;
+}
+
+.voidglitch .header-fields {
+  flex: 1;
+}
+
+.voidglitch .charname input {
+  width: 100%;
+  font-size: 24px;
+  color: #00ffcc;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #444;
+}
+
+/* Inputs */
+.voidglitch input[type="text"], 
+.voidglitch input[type="number"], 
+.voidglitch select {
+  background: #222;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.voidglitch input[type="text"]:focus, 
+.voidglitch input[type="number"]:focus, 
+.voidglitch select:focus {
+  border-color: #00ffcc;
+  box-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
+}
+
+/* Tabs */
+.voidglitch .sheet-tabs {
+  border-bottom: 2px solid #444;
+  margin-bottom: 15px;
+  display: flex;
+}
+
+.voidglitch .sheet-tabs .item {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #aaa;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  border-bottom: none;
+  margin-right: 2px;
+}
+
+.voidglitch .sheet-tabs .item.active {
+  background: #00ffcc;
+  color: #000;
+  border-color: #00ffcc;
+}
+
+/* Grids */
+.voidglitch .attributes-grid,
+.voidglitch .tracks-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.voidglitch .attribute, 
+.voidglitch .track {
+  background: #1a1a1a;
+  border: 1px solid #444;
+  padding: 10px;
+  text-align: center;
+  flex: 1;
+}
+
+.voidglitch .attribute label,
+.voidglitch .track label {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  color: #ff0055;
+  margin-bottom: 5px;
+}
+
+.voidglitch .attribute input {
+  width: 50px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.voidglitch .track input {
+  width: 40px;
+  text-align: center;
+}
+
+/* Form Groups */
+.voidglitch .npc-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.voidglitch .npc-stats input[type="number"] {
+  width: 50px;
+}
+
+.voidglitch .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+/* Action Dialog Styles */
+.voidglitch.action-dialog .form-group {
+  margin-bottom: 15px;
+}
+.voidglitch.action-dialog label {
+  font-family: 'Orbitron', sans-serif;
+  color: #00ffcc;
+  display: block;
+  margin-bottom: 5px;
+}
+.voidglitch.action-dialog .push-options {
+  display: flex;
+  justify-content: space-between;
+  background: #1a1a1a;
+  padding: 10px;
+  border: 1px solid #444;
+}
+
+/* Chat Card Styles */
+.voidglitch.chat-card {
+  background: #111;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  font-family: 'Roboto Mono', monospace;
+  padding: 5px;
+}
+.voidglitch.chat-card .card-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #00ffcc;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+.voidglitch.chat-card .card-header img {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #00ffcc;
+  margin-right: 10px;
+}
+.voidglitch.chat-card .card-header h3 {
+  margin: 0;
+  color: #00ffcc;
+  font-family: 'Orbitron', sans-serif;
+  flex: 1;
+}
+.voidglitch.chat-card .action-title {
+  font-size: 12px;
+  color: #aaa;
+}
+.voidglitch.chat-card .roll-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background: #1a1a1a;
+  padding: 5px;
+}
+.voidglitch.chat-card .dice-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+.voidglitch.chat-card .die {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background: #222;
+  border: 1px solid #444;
+  font-weight: bold;
+}
+.voidglitch.chat-card .die.success {
+  border-color: #00ffcc;
+  color: #00ffcc;
+  background: rgba(0, 255, 204, 0.1);
+}
+.voidglitch.chat-card .die.flare {
+  border-color: #ff0055;
+  color: #ff0055;
+  box-shadow: 0 0 5px rgba(255, 0, 85, 0.8);
+}
+.voidglitch.chat-card .outcome-banner {
+  text-align: center;
+  padding: 10px;
+  background: #1a1a1a;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+  margin-bottom: 10px;
+}
+.voidglitch.chat-card .outcome-label {
+  margin: 0;
+  font-size: 24px;
+  color: #00ffcc;
+}
+.voidglitch.chat-card.GLITCH .outcome-label { color: #ff0055; }
+.voidglitch.chat-card.SPARK .outcome-label { color: #ffaa00; }
+.voidglitch.chat-card.SURGE .outcome-label { color: #00ffcc; }
+.voidglitch.chat-card.NOVA .outcome-label { color: #00aaff; font-weight: bold; text-shadow: 0 0 10px rgba(0, 170, 255, 0.8); }
+.voidglitch.chat-card .void-flare-alert {
+  color: #ff0055;
+  text-align: center;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Controller Toolkit Styles */
+.voidglitch.controller-toolkit .content {
+  padding: 10px;
+}
+.voidglitch.controller-toolkit .generate-btn {
+  width: 100%;
+  padding: 10px;
+  background: #1a1a1a;
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+}
+.voidglitch.controller-toolkit .generate-btn:hover {
+  background: #00ffcc;
+  color: #000;
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}

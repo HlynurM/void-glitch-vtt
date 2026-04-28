@@ -1,0 +1,72 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Adversary/Environment Name"/></h1>
+      
+      <div class="npc-stats">
+        <label>Tier:</label>
+        <input name="system.details.tier" type="number" value="{{system.details.tier}}" min="1" max="4"/>
+        
+        <label>Power:</label>
+        <input name="system.details.power" type="number" value="{{system.details.power}}" min="0" max="4"/>
+
+        <label>Stage:</label>
+        <select name="system.details.stage">
+          {{#select system.details.stage}}
+          <option value="Intact">Intact</option>
+          <option value="Shaken">Shaken</option>
+          <option value="Critical">Critical</option>
+          <option value="Down">Down</option>
+          {{/select}}
+        </select>
+        
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.details.isEnvironment" {{checked system.details.isEnvironment}}/>
+          Is Environment Node
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="combat">Combat & Abilities</a>
+    <a class="item" data-tab="details">Details & Tactics</a>
+  </nav>
+
+  <section class="sheet-body">
+    
+    <div class="tab combat" data-group="primary" data-tab="combat">
+      <div class="tracks-grid">
+        <div class="track">
+          <label>HARM (Physical)</label>
+          <input type="number" name="system.tracks.harm.value" value="{{system.tracks.harm.value}}"/> / {{system.tracks.harm.max}}
+        </div>
+        {{#unless isEnvironment}}
+        <div class="track">
+          <label>STRAIN (Mental/Social)</label>
+          <input type="number" name="system.tracks.strain.value" value="{{system.tracks.strain.value}}"/> / {{system.tracks.strain.max}}
+        </div>
+        {{/unless}}
+      </div>
+      
+      <hr/>
+      <h2>Weapons / Hazards</h2>
+      <!-- Future: Weapons/Hazards list -->
+      
+      <h2>Abilities / Interrupts</h2>
+      <!-- Future: Abilities list -->
+    </div>
+
+    <div class="tab details" data-group="primary" data-tab="details">
+      <h3>Description</h3>
+      {{editor enrichedDescription target="system.details.description" button=true owner=owner editable=editable}}
+
+      <h3>Tactics / Behaviors</h3>
+      {{editor enrichedTactics target="system.details.tactics" button=true owner=owner editable=editable}}
+    </div>
+
+  </section>
+
+</form>

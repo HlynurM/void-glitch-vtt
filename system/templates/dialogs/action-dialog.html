@@ -1,0 +1,70 @@
+<form class="voidglitch action-dialog">
+  
+  <div class="form-group">
+    <label>Action Move</label>
+    <select name="actionName">
+      <option value="ENGAGE">ENGAGE</option>
+      <option value="MANEUVER">MANEUVER</option>
+      <option value="INTERFACE">INTERFACE</option>
+      <option value="TRACE">TRACE</option>
+      <option value="PRIME">PRIME</option>
+      <option value="WARD">WARD</option>
+      <option value="DRIFT">DRIFT</option>
+      <option value="Custom">Custom</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Attribute</label>
+    <select name="attributeKey">
+      <option value="edge" {{#if (eq defaultAttribute "edge")}}selected{{/if}}>EDGE ({{attributes.edge}})</option>
+      <option value="grit" {{#if (eq defaultAttribute "grit")}}selected{{/if}}>GRIT ({{attributes.grit}})</option>
+      <option value="cortex" {{#if (eq defaultAttribute "cortex")}}selected{{/if}}>CORTEX ({{attributes.cortex}})</option>
+      <option value="guile" {{#if (eq defaultAttribute "guile")}}selected{{/if}}>GUILE ({{attributes.guile}})</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Base Risk</label>
+    <select name="baseRisk">
+      <option value="3">Easy (3+)</option>
+      <option value="4" selected>Routine (4+)</option>
+      <option value="5">Dangerous (5+)</option>
+      <option value="6">Deadly (6+)</option>
+    </select>
+  </div>
+
+  <hr>
+
+  <div class="form-group">
+    <label>Position Modifier</label>
+    <select name="positionMod">
+      <option value="0">Standard</option>
+      <option value="-1">Superior (-1 Risk)</option>
+      <option value="1">Inferior (+1 Risk)</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Bonus Dice (Gear, Traits, SET-UP)</label>
+    <input type="number" name="bonusDice" value="0" min="-5" max="5"/>
+  </div>
+
+  <hr>
+
+  <div class="form-group checkbox-group">
+    <label>
+      <input type="checkbox" name="isVoidTainted"/>
+      Zone is Void-Tainted (1s and 6s trigger Void Flares)
+    </label>
+  </div>
+
+  <div class="form-group push-group">
+    <label>Push the Roll (Spend Currency for +Dice)</label>
+    <div class="push-options">
+      <label><input type="checkbox" name="spendStrain"/> Spend 1 Strain (+1 Die)</label>
+      <label><input type="checkbox" name="spendCorruption"/> Spend 1 Corruption (+1 Die)</label>
+    </div>
+  </div>
+
+</form>

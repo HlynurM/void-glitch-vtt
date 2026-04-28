@@ -1,0 +1,139 @@
+export class ActionDialog extends Dialog {
+  
+  static async create(actor, options = {}) {
+    const templateData = {
+      attributes: {
+        edge: actor.system.attributes.edge.value,
+        grit: actor.system.attributes.grit.value,
+        cortex: actor.system.attributes.cortex.value,
+        guile: actor.system.attributes.guile.value
+      },
+      defaultAttribute: options.defaultAttribute || "edge"
+    };
+
+    const html = await renderTemplate("systems/void-glitch/templates/dialogs/action-dialog.html", templateData);
+
+    return new Promise((resolve) => {
+      const dialog = new ActionDialog({
+        title: `Action Roll: ${actor.name}`,
+        content: html,
+        buttons: {
+          roll: {
+            icon: '<i class="fas fa-dice"></i>',
+            label: "Roll",
+            callback: html => resolve(ActionDialog._processRoll(html, actor))
+          },
+          cancel: {
+            icon: '<i class="fas fa-times"></i>',
+            label: "Cancel",
+            callback: () => resolve(null)
+          }
+        },
+        default: "roll",
+        close: () => resolve(null)
+      });
+      dialog.render(true);
+    });
+  }
+
+  static async _processRoll(html, actor) {
+    const form = html[0].querySelector("form");
+    
+    const actionName = form.actionName.value;
+    const attributeKey = form.attributeKey.value;
+    const baseRisk = parseInt(form.baseRisk.value);
+    const positionMod = parseInt(form.positionMod.value);
+    const bonusDice = parseInt(form.bonusDice.value);
+    const isVoidTainted = form.isVoidTainted.checked;
+    const spendStrain = form.spendStrain.checked;
+    const spendCorruption = form.spendCorruption.checked;
+
+    // Calculate Final Risk (min 3, max 6)
+    let finalRisk = Math.max(3, Math.min(6, baseRisk + positionMod));
+
+    // Calculate Pool Size
+    const attributeValue = actor.system.attributes[attributeKey].value || 1;
+    let poolSize = attributeValue + bonusDice;
+    
+    let costs = [];
+    if (spendStrain) {
+      poolSize += 1;
+      costs.push("1 Strain");
+      // Apply Strain cost (we will update the actor document)
+      const currentStrain = actor.system.tracks.strain.value;
+      await actor.update({ "system.tracks.strain.value": currentStrain + 1 });
+    }
+    if (spendCorruption) {
+      poolSize += 1;
+      costs.push("1 Corruption");
+      // Apply Corruption cost
+      const currentCorruption = actor.system.tracks.corruption.value;
+      await actor.update({ "system.tracks.corruption.value": currentCorruption + 1 });
+    }
+
+    // Ensure pool is at least 1 die. If 0 or less, maybe roll 2 and take lowest? 
+    // The rules don't explicitly mention 0 dice, assuming min 1 die.
+    poolSize = Math.max(poolSize, 1);
+
+    // Roll the dice
+    // Using standard Foundry Roll: poolSize d6, count successes >= finalRisk
+    const rollExpression = `${poolSize}d6cs>=${finalRisk}`;
+    const roll = new Roll(rollExpression);
+    await roll.evaluate({async: true});
+
+    // Process Results
+    const diceResults = roll.terms[0].results.map(r => r.result);
+    let hits = 0;
+    let flares = 0;
+
+    diceResults.forEach(r => {
+      if (r >= finalRisk) hits++;
+      if (isVoidTainted && (r === 1 || r === 6)) flares++;
+    });
+
+    // Determine Outcome Ladder
+    let outcome = "GLITCH";
+    let advantagePicks = 0;
+
+    if (hits === 1) {
+      outcome = "SPARK";
+    } else if (hits === 2) {
+      outcome = "SURGE";
+      advantagePicks = 2;
+    } else if (hits >= 3) {
+      outcome = "NOVA";
+      advantagePicks = 3;
+    }
+
+    // Render Chat Message
+    const templateData = {
+      actor: actor,
+      actionName: actionName,
+      attribute: attributeKey.toUpperCase(),
+      poolSize: poolSize,
+      risk: finalRisk,
+      costs: costs.join(" & "),
+      dice: diceResults,
+      hits: hits,
+      flares: flares,
+      outcome: outcome,
+      advantagePicks: advantagePicks,
+      isVoidTainted: isVoidTainted
+    };
+
+    const chatHtml = await renderTemplate("systems/void-glitch/templates/chat/action-result.html", templateData);
+
+    let chatData = {
+      user: game.user.id,
+      speaker: ChatMessage.getSpeaker({ actor: actor }),
+      content: chatHtml,
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      rolls: [roll],
+      sound: CONFIG.sounds.dice
+    };
+
+    ChatMessage.create(chatData);
+
+    return { hits, outcome, flares };
+  }
+}

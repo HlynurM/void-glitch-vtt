@@ -1,0 +1,49 @@
+<div class="voidglitch chat-card action-result {{outcome}}">
+  <header class="card-header">
+    <img src="{{actor.img}}" title="{{actor.name}}"/>
+    <h3>{{actor.name}}</h3>
+    <span class="action-title">{{actionName}} ({{attribute}})</span>
+  </header>
+
+  <div class="card-content">
+    <div class="roll-summary">
+      <div class="stat">
+        <span class="label">Pool</span>
+        <span class="value">{{poolSize}}d6</span>
+      </div>
+      <div class="stat">
+        <span class="label">Risk</span>
+        <span class="value">{{risk}}+</span>
+      </div>
+    </div>
+
+    {{#if costs}}
+    <div class="roll-costs">
+      <em>Paid: {{costs}}</em>
+    </div>
+    {{/if}}
+
+    <div class="dice-tray">
+      {{#each dice as |die|}}
+        <span class="die {{#if (gte die ../risk)}}success{{/if}} {{#if ../isVoidTainted}}{{#if (eq die 1)}}flare{{/if}}{{#if (eq die 6)}}flare{{/if}}{{/if}}">{{die}}</span>
+      {{/each}}
+    </div>
+
+    <div class="outcome-banner">
+      <h2 class="outcome-label">{{outcome}}</h2>
+      <div class="outcome-details">
+        <span>Hits: {{hits}}</span>
+        {{#if advantagePicks}}
+          <span> | Picks: {{advantagePicks}}</span>
+        {{/if}}
+      </div>
+    </div>
+
+    {{#if flares}}
+    <div class="void-flare-alert">
+      <i class="fas fa-exclamation-triangle"></i> VOID FLARE TRIGGERED (x{{flares}})
+    </div>
+    {{/if}}
+
+  </div>
+</div>

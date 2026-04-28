@@ -1,0 +1,85 @@
+{
+  "Actor": {
+    "types": ["asset", "npc"],
+    "asset": {
+      "attributes": {
+        "edge": { "value": 1 },
+        "grit": { "value": 1 },
+        "cortex": { "value": 1 },
+        "guile": { "value": 1 }
+      },
+      "tracks": {
+        "harm": { "value": 0, "max": 6 },
+        "strain": { "value": 0, "max": 6 },
+        "corruption": { "value": 0, "max": 6 }
+      },
+      "load": { "value": 0, "max": 5 },
+      "resources": {
+        "heat": { "value": 0, "max": 4 },
+        "resonance": { "value": 0, "max": 4 },
+        "momentum": { "value": false }
+      },
+      "details": {
+        "blueprint": "",
+        "motivation": "",
+        "background": ""
+      }
+    },
+    "npc": {
+      "attributes": {
+        "edge": { "value": 1 },
+        "grit": { "value": 1 },
+        "cortex": { "value": 1 },
+        "guile": { "value": 1 }
+      },
+      "tracks": {
+        "harm": { "value": 0, "max": 4 },
+        "strain": { "value": 0, "max": 4 }
+      },
+      "details": {
+        "description": "",
+        "tactics": "",
+        "isEnvironment": false,
+        "power": 1,
+        "tier": 1,
+        "stage": "Intact"
+      }
+    }
+  },
+  "Item": {
+    "types": ["blueprint", "trait", "ability", "weapon", "armor", "gear"],
+    "blueprint": {
+      "description": "",
+      "role": "",
+      "engine": ""
+    },
+    "trait": {
+      "description": "",
+      "type": "conditional"
+    },
+    "ability": {
+      "description": "",
+      "cost": "",
+      "surge": "",
+      "nova": ""
+    },
+    "weapon": {
+      "description": "",
+      "tier": 1,
+      "damage": 1,
+      "range": "Close",
+      "tags": ""
+    },
+    "armor": {
+      "description": "",
+      "armor": 1,
+      "tags": ""
+    },
+    "gear": {
+      "description": "",
+      "tier": 1,
+      "quantity": 1,
+      "tags": ""
+    }
+  }
+}

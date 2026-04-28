@@ -1,0 +1,88 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Asset Name"/></h1>
+      <div class="blueprint-field">
+        <label>Blueprint:</label>
+        <input name="system.details.blueprint" type="text" value="{{system.details.blueprint}}"/>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="abilities">Abilities & Traits</a>
+    <a class="item" data-tab="combat">Combat & Gear</a>
+    <a class="item" data-tab="details">Details</a>
+  </nav>
+
+  <section class="sheet-body">
+    
+    <!-- ABILITIES & TRAITS TAB -->
+    <div class="tab abilities" data-group="primary" data-tab="abilities">
+      <div class="attributes-grid">
+        <div class="attribute">
+          <label class="rollable" data-roll-type="action" data-attribute="edge">EDGE</label>
+          <input type="number" name="system.attributes.edge.value" value="{{system.attributes.edge.value}}" min="1" max="4"/>
+        </div>
+        <div class="attribute">
+          <label class="rollable" data-roll-type="action" data-attribute="grit">GRIT</label>
+          <input type="number" name="system.attributes.grit.value" value="{{system.attributes.grit.value}}" min="1" max="4"/>
+        </div>
+        <div class="attribute">
+          <label class="rollable" data-roll-type="action" data-attribute="cortex">CORTEX</label>
+          <input type="number" name="system.attributes.cortex.value" value="{{system.attributes.cortex.value}}" min="1" max="4"/>
+        </div>
+        <div class="attribute">
+          <label class="rollable" data-roll-type="action" data-attribute="guile">GUILE</label>
+          <input type="number" name="system.attributes.guile.value" value="{{system.attributes.guile.value}}" min="1" max="4"/>
+        </div>
+      </div>
+
+      <div class="tracks-grid">
+        <div class="track">
+          <label>HARM</label>
+          <input type="number" name="system.tracks.harm.value" value="{{system.tracks.harm.value}}"/> / {{system.tracks.harm.max}}
+        </div>
+        <div class="track">
+          <label>STRAIN</label>
+          <input type="number" name="system.tracks.strain.value" value="{{system.tracks.strain.value}}"/> / {{system.tracks.strain.max}}
+        </div>
+        <div class="track">
+          <label>CORRUPTION</label>
+          <input type="number" name="system.tracks.corruption.value" value="{{system.tracks.corruption.value}}"/> / {{system.tracks.corruption.max}}
+        </div>
+      </div>
+
+      <hr/>
+      <h2>Abilities & Traits</h2>
+      <!-- Future: Iterate over items here -->
+    </div>
+
+    <!-- COMBAT & GEAR TAB -->
+    <div class="tab combat" data-group="primary" data-tab="combat">
+      <div class="load-tracker">
+        <label>LOAD:</label>
+        <span>{{system.load.value}} / {{system.load.max}}</span>
+      </div>
+      <h2>Weapons</h2>
+      <!-- Future: Weapons list -->
+      <h2>Armor & Gear</h2>
+      <!-- Future: Gear list -->
+    </div>
+
+    <!-- DETAILS TAB -->
+    <div class="tab details" data-group="primary" data-tab="details">
+      <div class="motivation-field">
+        <label>Motivation:</label>
+        <input name="system.details.motivation" type="text" value="{{system.details.motivation}}"/>
+      </div>
+      <div class="background-field">
+        <label>Background:</label>
+        {{editor enrichedBackground target="system.details.background" button=true owner=owner editable=editable}}
+      </div>
+    </div>
+  </section>
+
+</form>

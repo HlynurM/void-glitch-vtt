@@ -1,0 +1,45 @@
+{
+  "id": "void-glitch",
+  "title": "VOID // GLITCH",
+  "description": "A tabletop RPG system of dangerous operatives and shifting reality.",
+  "version": "0.1.0",
+  "url": "https://github.com/HlynurM/void-glitch-vtt",
+  "manifest": "https://raw.githubusercontent.com/HlynurM/void-glitch-vtt/main/system.json",
+  "download": "https://github.com/HlynurM/void-glitch-vtt/archive/refs/heads/main.zip",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12",
+    "maximum": "12"
+  },
+  "authors": [
+    {
+      "name": "Dark Roast"
+    }
+  ],
+  "relationships": {
+    "systems": [],
+    "requires": [],
+    "recommends": [
+      {
+        "id": "global-progress-clocks",
+        "type": "module",
+        "manifest": "https://github.com/p4535992/foundryvtt-global-progress-clocks/releases/latest/download/module.json",
+        "reason": "Highly recommended for managing the various Clocks in VOID // GLITCH (Complication, Swarm, Cover)."
+      }
+    ]
+  },
+  "esmodules": [
+    "module/void-glitch.mjs"
+  ],
+  "styles": [
+    "styles/void-glitch.css"
+  ],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}
