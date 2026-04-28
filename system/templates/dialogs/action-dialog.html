@@ -2,16 +2,22 @@
   
   <div class="form-group">
     <label>Action Move</label>
-    <select name="actionName">
-      <option value="ENGAGE">ENGAGE</option>
-      <option value="MANEUVER">MANEUVER</option>
-      <option value="INTERFACE">INTERFACE</option>
-      <option value="TRACE">TRACE</option>
-      <option value="PRIME">PRIME</option>
-      <option value="WARD">WARD</option>
-      <option value="DRIFT">DRIFT</option>
-      <option value="Custom">Custom</option>
-    </select>
+    {{#if weaponName}}
+      <input type="text" name="actionName" value="ATTACK: {{weaponName}}" readonly style="color: #ff0055; font-weight: bold;"/>
+      {{#if weaponTags}}<div style="font-size: 12px; color: #aaa; margin-top: 2px;">Tags: {{weaponTags}}</div>{{/if}}
+      <input type="hidden" name="weaponDamage" value="{{weaponDamage}}"/>
+    {{else}}
+      <select name="actionName">
+        <option value="ENGAGE">ENGAGE</option>
+        <option value="MANEUVER">MANEUVER</option>
+        <option value="INTERFACE">INTERFACE</option>
+        <option value="TRACE">TRACE</option>
+        <option value="PRIME">PRIME</option>
+        <option value="WARD">WARD</option>
+        <option value="DRIFT">DRIFT</option>
+        <option value="Custom">Custom</option>
+      </select>
+    {{/if}}
   </div>
 
   <div class="form-group">

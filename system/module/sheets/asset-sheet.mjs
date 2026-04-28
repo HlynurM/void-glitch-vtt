@@ -25,9 +25,21 @@ export class VoidGlitchAssetSheet extends ActorSheet {
     context.blueprints = context.items.filter(i => i.type === 'blueprint');
 
     // Make safe HTML for editor
-    context.enrichedBackground = await TextEditor.enrichHTML(context.system.details.background, {async: true});
+    context.enrichedBackground = await TextEditor.enrichHTML(context.system.details.background || "", {async: true});
 
     return context;
+  }
+
+  /** @override */
+  async _onDropItemCreate(itemData) {
+    // If dropping a blueprint, update the asset's blueprint text field automatically
+    const isBlueprint = itemData.type === "blueprint" || (Array.isArray(itemData) && itemData[0]?.type === "blueprint");
+    if (isBlueprint) {
+      const blueprintName = Array.isArray(itemData) ? itemData[0].name : itemData.name;
+      await this.actor.update({ "system.details.blueprint": blueprintName });
+    }
+
+    return super._onDropItemCreate(itemData);
   }
 
   activateListeners(html) {
@@ -62,8 +74,16 @@ export class VoidGlitchAssetSheet extends ActorSheet {
     const dataset = element.dataset;
 
     if (dataset.rollType === "action") {
-      // Default the dialog to the attribute that was clicked
       const options = { defaultAttribute: dataset.attribute };
+      await ActionDialog.create(this.actor, options);
+    } else if (dataset.rollType === "weapon") {
+      const item = this.actor.items.get(dataset.itemId);
+      const options = { 
+        defaultAttribute: "edge", // Engaging usually uses Edge or Grit
+        weaponName: item.name,
+        weaponDamage: item.system.damage,
+        weaponTags: item.system.tags
+      };
       await ActionDialog.create(this.actor, options);
     }
   }

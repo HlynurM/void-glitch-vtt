@@ -3,6 +3,8 @@ import { VoidGlitchItem } from "./documents/item.mjs";
 import { VoidGlitchAssetSheet } from "./sheets/asset-sheet.mjs";
 import { VoidGlitchNpcSheet } from "./sheets/npc-sheet.mjs";
 import { VoidGlitchEnvironmentSheet } from "./sheets/environment-sheet.mjs";
+import { VoidGlitchItemSheet } from "./sheets/item-sheet.mjs";
+import { initializeBlueprints } from "./utils/compendium-init.mjs";
 import "./apps/controller-toolkit.mjs";
 
 Hooks.once('init', async function() {
@@ -23,6 +25,9 @@ Hooks.once('init', async function() {
   Actors.registerSheet("void-glitch", VoidGlitchNpcSheet, { types: ["npc"], makeDefault: true });
   Actors.registerSheet("void-glitch", VoidGlitchEnvironmentSheet, { types: ["environment"], makeDefault: true });
 
+  Items.unregisterSheet("core", ItemSheet);
+  Items.registerSheet("void-glitch", VoidGlitchItemSheet, { makeDefault: true });
+
   // Register Handlebars Helpers
   Handlebars.registerHelper('trackBoxes', function(current, max, trackName) {
     let html = '';
@@ -35,6 +40,10 @@ Hooks.once('init', async function() {
 
   // Register System Settings
   registerSystemSettings();
+});
+
+Hooks.once('ready', async function() {
+  await initializeBlueprints();
 });
 
 function registerSystemSettings() {

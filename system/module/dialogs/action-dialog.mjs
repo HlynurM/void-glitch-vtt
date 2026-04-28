@@ -8,13 +8,17 @@ export class ActionDialog extends Dialog {
         cortex: actor.system.attributes.cortex.value,
         guile: actor.system.attributes.guile.value
       },
-      defaultAttribute: options.defaultAttribute || "edge"
+      defaultAttribute: options.defaultAttribute || "edge",
+      weaponName: options.weaponName,
+      weaponDamage: options.weaponDamage,
+      weaponTags: options.weaponTags
     };
 
     const html = await renderTemplate("systems/void-glitch/templates/dialogs/action-dialog.html", templateData);
 
     return new Promise((resolve) => {
       const dialog = new ActionDialog({
+        classes: ["voidglitch", "action-dialog", "dialog"],
         title: `Action Roll: ${actor.name}`,
         content: html,
         buttons: {
@@ -118,7 +122,8 @@ export class ActionDialog extends Dialog {
       flares: flares,
       outcome: outcome,
       advantagePicks: advantagePicks,
-      isVoidTainted: isVoidTainted
+      isVoidTainted: isVoidTainted,
+      weaponDamage: form.weaponDamage ? parseInt(form.weaponDamage.value) : null
     };
 
     const chatHtml = await renderTemplate("systems/void-glitch/templates/chat/action-result.html", templateData);

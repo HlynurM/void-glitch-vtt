@@ -1,0 +1,106 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Item Name"/></h1>
+    </div>
+  </header>
+
+  <section class="sheet-body">
+    
+    {{#if (eq item.type "blueprint")}}
+    <div class="item-stats">
+      <div class="form-group">
+        <label>Role</label>
+        <input type="text" name="system.role" value="{{system.role}}"/>
+      </div>
+      <div class="form-group">
+        <label>Engine Rule</label>
+        <textarea name="system.engine" rows="3">{{system.engine}}</textarea>
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if (eq item.type "weapon")}}
+    <div class="item-stats grid-2col">
+      <div class="form-group">
+        <label>Damage / Harm</label>
+        <input type="number" name="system.damage" value="{{system.damage}}"/>
+      </div>
+      <div class="form-group">
+        <label>Tier</label>
+        <input type="number" name="system.tier" value="{{system.tier}}"/>
+      </div>
+      <div class="form-group">
+        <label>Range</label>
+        <input type="text" name="system.range" value="{{system.range}}"/>
+      </div>
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" name="system.tags" value="{{system.tags}}"/>
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if (eq item.type "ability")}}
+    <div class="item-stats grid-2col">
+      <div class="form-group">
+        <label>Cost</label>
+        <input type="text" name="system.cost" value="{{system.cost}}"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Surge Effect</label>
+      <input type="text" name="system.surge" value="{{system.surge}}"/>
+    </div>
+    <div class="form-group">
+      <label>Nova Effect</label>
+      <input type="text" name="system.nova" value="{{system.nova}}"/>
+    </div>
+    {{/if}}
+
+    {{#if (eq item.type "armor")}}
+    <div class="item-stats grid-2col">
+      <div class="form-group">
+        <label>Armor Rating</label>
+        <input type="number" name="system.armor" value="{{system.armor}}"/>
+      </div>
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" name="system.tags" value="{{system.tags}}"/>
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if (eq item.type "gear")}}
+    <div class="item-stats grid-2col">
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" name="system.quantity" value="{{system.quantity}}"/>
+      </div>
+      <div class="form-group">
+        <label>Tier</label>
+        <input type="number" name="system.tier" value="{{system.tier}}"/>
+      </div>
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" name="system.tags" value="{{system.tags}}"/>
+      </div>
+    </div>
+    {{/if}}
+
+    {{#if (eq item.type "trait")}}
+    <div class="item-stats grid-2col">
+      <div class="form-group">
+        <label>Type</label>
+        <input type="text" name="system.type" value="{{system.type}}"/>
+      </div>
+    </div>
+    {{/if}}
+
+    <hr>
+    <h3>Description</h3>
+    {{editor enrichedDescription target="system.description" button=true owner=owner editable=editable}}
+
+  </section>
+</form>
