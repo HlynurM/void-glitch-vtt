@@ -8,8 +8,8 @@
   "download": "https://github.com/HlynurM/void-glitch-vtt/archive/refs/heads/main.zip",
   "compatibility": {
     "minimum": "11",
-    "verified": "12",
-    "maximum": "12"
+    "verified": "14",
+    "maximum": "14"
   },
   "authors": [
     {
