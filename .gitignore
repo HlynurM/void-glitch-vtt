@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Foundry VTT
+Data/
+Config/
+Logs/
+
+# Node modules (if we add them later)
+node_modules/
+package-lock.json
+
+# IDEs
+.vscode/
+.idea/
+
+# AI context
+.gemini/
