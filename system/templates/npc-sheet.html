@@ -41,22 +41,52 @@
       <div class="tracks-grid">
         <div class="track">
           <label>HARM (Physical)</label>
-          <input type="number" name="system.tracks.harm.value" value="{{system.tracks.harm.value}}"/> / {{system.tracks.harm.max}}
+          <div class="track-boxes">
+            {{trackBoxes system.tracks.harm.value system.tracks.harm.max "harm"}}
+          </div>
         </div>
         {{#unless isEnvironment}}
         <div class="track">
           <label>STRAIN (Mental/Social)</label>
-          <input type="number" name="system.tracks.strain.value" value="{{system.tracks.strain.value}}"/> / {{system.tracks.strain.max}}
+          <div class="track-boxes">
+            {{trackBoxes system.tracks.strain.value system.tracks.strain.max "strain"}}
+          </div>
         </div>
         {{/unless}}
       </div>
       
       <hr/>
       <h2>Weapons / Hazards</h2>
-      <!-- Future: Weapons/Hazards list -->
+      <ol class="items-list">
+        {{#each weapons as |item id|}}
+        <li class="item flexrow" data-item-id="{{item._id}}">
+          <div class="item-name flexrow">
+            <div class="item-image" style="background-image: url({{item.img}})"></div>
+            <h4>{{item.name}}</h4>
+          </div>
+          <div class="item-controls">
+            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ol>
       
       <h2>Abilities / Interrupts</h2>
-      <!-- Future: Abilities list -->
+      <ol class="items-list">
+        {{#each abilities as |item id|}}
+        <li class="item flexrow" data-item-id="{{item._id}}">
+          <div class="item-name flexrow">
+            <div class="item-image" style="background-image: url({{item.img}})"></div>
+            <h4>{{item.name}}</h4>
+          </div>
+          <div class="item-controls">
+            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ol>
     </div>
 
     <div class="tab details" data-group="primary" data-tab="details">

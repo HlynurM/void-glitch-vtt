@@ -138,6 +138,29 @@
   text-align: center;
 }
 
+.voidglitch .track-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.voidglitch .track-box {
+  font-size: 20px;
+  cursor: pointer;
+  color: #444;
+  transition: color 0.2s;
+}
+
+.voidglitch .track-box:hover {
+  color: #00ffcc;
+}
+
+.voidglitch .track-box.fas {
+  color: #ff0055;
+  text-shadow: 0 0 5px rgba(255, 0, 85, 0.5);
+}
+
 /* Form Groups */
 .voidglitch .npc-stats {
   display: flex;

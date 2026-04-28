@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["asset", "npc"],
+    "types": ["asset", "npc", "environment"],
     "asset": {
       "attributes": {
         "edge": { "value": 1 },
@@ -40,6 +40,18 @@
         "description": "",
         "tactics": "",
         "isEnvironment": false,
+        "power": 1,
+        "tier": 1,
+        "stage": "Intact"
+      }
+    },
+    "environment": {
+      "tracks": {
+        "complication": { "value": 0, "max": 4 }
+      },
+      "details": {
+        "description": "",
+        "hazards": "",
         "power": 1,
         "tier": 1,
         "stage": "Intact"

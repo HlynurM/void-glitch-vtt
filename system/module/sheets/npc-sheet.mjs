@@ -9,7 +9,7 @@ export class VoidGlitchNpcSheet extends ActorSheet {
     });
   }
 
-  getData() {
+  async getData() {
     const context = super.getData();
     context.system = context.actor.system;
     
@@ -19,14 +19,17 @@ export class VoidGlitchNpcSheet extends ActorSheet {
     context.weapons = context.items.filter(i => i.type === 'weapon');
     context.abilities = context.items.filter(i => i.type === 'ability');
 
-    context.enrichedDescription = TextEditor.enrichHTML(context.system.details.description, {async: false});
-    context.enrichedTactics = TextEditor.enrichHTML(context.system.details.tactics, {async: false});
+    context.enrichedDescription = await TextEditor.enrichHTML(context.system.details.description, {async: true});
+    context.enrichedTactics = await TextEditor.enrichHTML(context.system.details.tactics, {async: true});
 
     return context;
   }
 
   activateListeners(html) {
     super.activateListeners(html);
+
+    // Track box click handlers (can be clicked even if not editable)
+    html.find('.track-box').click(this._onTrackBoxClick.bind(this));
 
     if (!this.isEditable) return;
 
@@ -41,5 +44,22 @@ export class VoidGlitchNpcSheet extends ActorSheet {
       this.actor.deleteEmbeddedDocuments("Item", [li.data("itemId")]);
       li.slideUp(200, () => this.render(false));
     });
+  }
+
+  async _onTrackBoxClick(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const trackName = element.dataset.track;
+    const index = parseInt(element.dataset.index);
+
+    const currentVal = this.actor.system.tracks[trackName].value;
+    
+    // If clicking the current value, decrease it by 1 (uncheck)
+    let newVal = index;
+    if (index === currentVal) {
+      newVal -= 1;
+    }
+
+    await this.actor.update({ [`system.tracks.${trackName}.value`]: newVal });
   }
 }

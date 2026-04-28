@@ -2,6 +2,7 @@ import { VoidGlitchActor } from "./documents/actor.mjs";
 import { VoidGlitchItem } from "./documents/item.mjs";
 import { VoidGlitchAssetSheet } from "./sheets/asset-sheet.mjs";
 import { VoidGlitchNpcSheet } from "./sheets/npc-sheet.mjs";
+import { VoidGlitchEnvironmentSheet } from "./sheets/environment-sheet.mjs";
 import "./apps/controller-toolkit.mjs";
 
 Hooks.once('init', async function() {
@@ -20,6 +21,17 @@ Hooks.once('init', async function() {
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("void-glitch", VoidGlitchAssetSheet, { types: ["asset"], makeDefault: true });
   Actors.registerSheet("void-glitch", VoidGlitchNpcSheet, { types: ["npc"], makeDefault: true });
+  Actors.registerSheet("void-glitch", VoidGlitchEnvironmentSheet, { types: ["environment"], makeDefault: true });
+
+  // Register Handlebars Helpers
+  Handlebars.registerHelper('trackBoxes', function(current, max, trackName) {
+    let html = '';
+    for (let i = 1; i <= max; i++) {
+      let checked = i <= current ? "fas fa-square" : "far fa-square";
+      html += `<i class="${checked} track-box" data-track="${trackName}" data-index="${i}"></i>`;
+    }
+    return new Handlebars.SafeString(html);
+  });
 
   // Register System Settings
   registerSystemSettings();

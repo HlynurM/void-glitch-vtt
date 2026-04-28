@@ -1,5 +1,20 @@
 {
   "VOIDGLITCH": {
     "System": "VOID // GLITCH"
+  },
+  "TYPES": {
+    "Actor": {
+      "asset": "The Asset",
+      "npc": "Adversary",
+      "environment": "Environment"
+    },
+    "Item": {
+      "blueprint": "Blueprint",
+      "trait": "Trait",
+      "ability": "Ability",
+      "weapon": "Weapon",
+      "armor": "Armor",
+      "gear": "Gear"
+    }
   }
 }

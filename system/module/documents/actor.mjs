@@ -7,7 +7,16 @@ export class VoidGlitchActor extends Actor {
 
   /** @override */
   prepareBaseData() {
-    // Data modifications in this step occur before processing embedded documents or derived data.
+    super.prepareBaseData();
+    
+    // Enforce Attribute limits (1-4)
+    if (this.system?.attributes) {
+      for (let attr of Object.values(this.system.attributes)) {
+        if (attr.value !== undefined) {
+          attr.value = Math.max(1, Math.min(4, attr.value));
+        }
+      }
+    }
   }
 
   /** @override */

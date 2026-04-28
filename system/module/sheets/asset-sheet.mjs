@@ -12,7 +12,7 @@ export class VoidGlitchAssetSheet extends ActorSheet {
     });
   }
 
-  getData() {
+  async getData() {
     const context = super.getData();
     context.system = context.actor.system;
 
@@ -22,9 +22,10 @@ export class VoidGlitchAssetSheet extends ActorSheet {
     context.weapons = context.items.filter(i => i.type === 'weapon');
     context.armor = context.items.filter(i => i.type === 'armor');
     context.gear = context.items.filter(i => i.type === 'gear');
+    context.blueprints = context.items.filter(i => i.type === 'blueprint');
 
     // Make safe HTML for editor
-    context.enrichedBackground = TextEditor.enrichHTML(context.system.details.background, {async: false});
+    context.enrichedBackground = await TextEditor.enrichHTML(context.system.details.background, {async: true});
 
     return context;
   }
@@ -34,6 +35,9 @@ export class VoidGlitchAssetSheet extends ActorSheet {
 
     // Roll handlers (can be clicked even if not editable)
     html.find('.rollable').click(this._onRoll.bind(this));
+
+    // Track box click handlers
+    html.find('.track-box').click(this._onTrackBoxClick.bind(this));
 
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
@@ -62,5 +66,22 @@ export class VoidGlitchAssetSheet extends ActorSheet {
       const options = { defaultAttribute: dataset.attribute };
       await ActionDialog.create(this.actor, options);
     }
+  }
+
+  async _onTrackBoxClick(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const trackName = element.dataset.track;
+    const index = parseInt(element.dataset.index);
+
+    const currentVal = this.actor.system.tracks[trackName].value;
+    
+    // If clicking the current value, decrease it by 1 (uncheck)
+    let newVal = index;
+    if (index === currentVal) {
+      newVal -= 1;
+    }
+
+    await this.actor.update({ [`system.tracks.${trackName}.value`]: newVal });
   }
 }

@@ -1,0 +1,49 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Environment Name"/></h1>
+      
+      <div class="npc-stats">
+        <label>Tier:</label>
+        <input name="system.details.tier" type="number" value="{{system.details.tier}}" min="1" max="4"/>
+        
+        <label>Power:</label>
+        <input name="system.details.power" type="number" value="{{system.details.power}}" min="0" max="4"/>
+
+        <label>Stage:</label>
+        <select name="system.details.stage">
+          {{#select system.details.stage}}
+          <option value="Intact">Intact</option>
+          <option value="Shaken">Shaken</option>
+          <option value="Critical">Critical</option>
+          <option value="Down">Down</option>
+          {{/select}}
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="details">Details & Hazards</a>
+  </nav>
+
+  <section class="sheet-body">
+    <div class="tab details" data-group="primary" data-tab="details">
+      <div class="tracks-grid">
+        <div class="track">
+          <label>COMPLICATION CLOCK</label>
+          <div class="track-boxes">
+            {{trackBoxes system.tracks.complication.value system.tracks.complication.max "complication"}}
+          </div>
+        </div>
+      </div>
+      
+      <h3>Description</h3>
+      {{editor enrichedDescription target="system.details.description" button=true owner=owner editable=editable}}
+
+      <h3>Hazards</h3>
+      {{editor enrichedHazards target="system.details.hazards" button=true owner=owner editable=editable}}
+    </div>
+  </section>
+</form>
