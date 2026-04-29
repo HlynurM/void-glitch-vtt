@@ -44,22 +44,22 @@ export class ActionDialog extends Dialog {
   static async _processRoll(html, actor) {
     const form = html[0].querySelector("form");
     
-    const actionName = form.actionName.value;
-    const attributeKey = form.attributeKey.value;
-    const baseRisk = parseInt(form.baseRisk.value);
-    const positionMod = parseInt(form.positionMod.value);
-    const bonusDice = parseInt(form.bonusDice.value);
-    const isVoidTainted = form.isVoidTainted.checked;
-    const spendStrain = form.spendStrain.checked;
-    const spendCorruption = form.spendCorruption.checked;
+    const actionName = form.actionName ? form.actionName.value : "Custom";
+    const attributeKey = form.attributeKey ? form.attributeKey.value : "edge";
+    const baseRisk = parseInt(form.baseRisk ? form.baseRisk.value : 4) || 4;
+    const positionMod = parseInt(form.positionMod ? form.positionMod.value : 0) || 0;
+    const bonusDice = parseInt(form.bonusDice ? form.bonusDice.value : 0) || 0;
+    const isVoidTainted = form.isVoidTainted ? form.isVoidTainted.checked : false;
+    const spendStrain = form.spendStrain ? form.spendStrain.checked : false;
+    const spendCorruption = form.spendCorruption ? form.spendCorruption.checked : false;
 
     try {
       // Calculate Final Risk (min 3, max 6)
-      let finalRisk = Math.max(3, Math.min(6, parseInt(baseRisk) + parseInt(positionMod)));
+      let finalRisk = Math.max(3, Math.min(6, baseRisk + positionMod));
 
       // Calculate Pool Size
-      const attributeValue = parseInt(actor.system.attributes[attributeKey].value) || 1;
-      let poolSize = attributeValue + parseInt(bonusDice);
+      const attributeValue = parseInt(actor.system.attributes[attributeKey]?.value) || 1;
+      let poolSize = attributeValue + bonusDice;
       
       let costs = [];
       if (spendStrain) {
@@ -142,7 +142,7 @@ export class ActionDialog extends Dialog {
       return { hits, outcome, flares };
     } catch (e) {
       console.error("VOID // GLITCH | Dice Roller Error:", e);
-      ui.notifications.error("There was an error processing the roll. Check the console (F12) for details.");
+      ui.notifications.error("Dice Error: " + e.message);
     }
   }
 }
