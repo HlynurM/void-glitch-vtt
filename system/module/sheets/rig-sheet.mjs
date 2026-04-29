@@ -13,7 +13,8 @@ export class VoidGlitchRigSheet extends ActorSheet {
     const context = super.getData();
     context.system = context.actor.system;
 
-    context.enrichedDescription = await TextEditor.enrichHTML(context.system.details.description || "", {async: true});
+    const TextEditorImpl = foundry?.applications?.ux?.TextEditor?.implementation ?? TextEditor;
+    context.enrichedDescription = await TextEditorImpl.enrichHTML(context.system.details.description || "");
 
     return context;
   }

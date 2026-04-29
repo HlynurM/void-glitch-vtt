@@ -13,7 +13,8 @@ export class VoidGlitchItemSheet extends ItemSheet {
     const context = super.getData();
     context.system = context.item.system;
 
-    context.enrichedDescription = await TextEditor.enrichHTML(context.system.description || "", {async: true});
+    const TextEditorImpl = foundry?.applications?.ux?.TextEditor?.implementation ?? TextEditor;
+    context.enrichedDescription = await TextEditorImpl.enrichHTML(context.system.description || "");
 
     return context;
   }

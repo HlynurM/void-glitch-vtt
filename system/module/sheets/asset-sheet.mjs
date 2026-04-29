@@ -24,8 +24,9 @@ export class VoidGlitchAssetSheet extends ActorSheet {
     context.gear = context.items.filter(i => i.type === 'gear');
     context.blueprints = context.items.filter(i => i.type === 'blueprint');
 
-    // Make safe HTML for editor
-    context.enrichedBackground = await TextEditor.enrichHTML(context.system.details.background || "", {async: true});
+    // Make safe HTML for editor (V13 compatible)
+    const TextEditorImpl = foundry?.applications?.ux?.TextEditor?.implementation ?? TextEditor;
+    context.enrichedBackground = await TextEditorImpl.enrichHTML(context.system.details.background || "");
 
     return context;
   }

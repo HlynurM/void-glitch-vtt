@@ -19,8 +19,9 @@ export class VoidGlitchNpcSheet extends ActorSheet {
     context.weapons = context.items.filter(i => i.type === 'weapon');
     context.abilities = context.items.filter(i => i.type === 'ability');
 
-    context.enrichedDescription = await TextEditor.enrichHTML(context.system.details.description || "", {async: true});
-    context.enrichedTactics = await TextEditor.enrichHTML(context.system.details.tactics || "", {async: true});
+    const TextEditorImpl = foundry?.applications?.ux?.TextEditor?.implementation ?? TextEditor;
+    context.enrichedDescription = await TextEditorImpl.enrichHTML(context.system.details.description || "");
+    context.enrichedTactics = await TextEditorImpl.enrichHTML(context.system.details.tactics || "");
 
     return context;
   }
