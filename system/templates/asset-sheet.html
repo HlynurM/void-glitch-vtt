@@ -39,6 +39,17 @@
           <input type="number" name="system.attributes.guile.value" value="{{system.attributes.guile.value}}" min="1" max="4"/>
         </div>
       </div>
+      
+      <div class="moves-list" style="margin-bottom: 20px; font-size: 14px; text-transform: uppercase; background: #1a1a1a; padding: 10px; border: 1px solid #444; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <span style="color: #ffaa00; font-family: 'Orbitron', sans-serif;">MOVES:</span>
+        <a class="rollable action-move" data-roll-type="move" data-move="ENGAGE" title="Close quarters or direct assault" style="color: #00ffcc;">ENGAGE</a> |
+        <a class="rollable action-move" data-roll-type="move" data-move="MANEUVER" title="Mobility, flanking, driving" style="color: #00ffcc;">MANEUVER</a> |
+        <a class="rollable action-move" data-roll-type="move" data-move="INTERFACE" title="Hacking, tech operation" style="color: #00ffcc;">INTERFACE</a> |
+        <a class="rollable action-move" data-roll-type="move" data-move="TRACE" title="Perception, tracking, scanning" style="color: #00ffcc;">TRACE</a> |
+        <a class="rollable action-move" data-roll-type="move" data-move="PRIME" title="Setting traps, leadership, prep" style="color: #00ffcc;">PRIME</a> |
+        <a class="rollable action-move" data-roll-type="move" data-move="WARD" title="Defense, willpower, resisting" style="color: #00ffcc;">WARD</a> |
+        <a class="rollable action-move" data-roll-type="move" data-move="DRIFT" title="Social influence, lying, ghosts" style="color: #00ffcc;">DRIFT</a>
+      </div>
 
       <div class="tracks-grid">
         <div class="track">
@@ -94,9 +105,12 @@
         {{/each}}
         {{#each traits as |item id|}}
         <li class="item flexrow" data-item-id="{{item._id}}">
-          <div class="item-name flexrow">
+          <div class="item-name flexrow" style="align-items: center;">
+            <a class="item-control trait-toggle" title="Toggle Active Status" style="margin-right: 10px; color: {{#if item.system.isActive}}#00ffcc{{else}}#444{{/if}};">
+              <i class="{{#if item.system.isActive}}fas fa-check-square{{else}}far fa-square{{/if}}"></i>
+            </a>
             <div class="item-image" style="background-image: url({{item.img}})"></div>
-            <h4>{{item.name}}</h4>
+            <h4 style="color: {{#if item.system.isActive}}#e0e0e0{{else}}#888{{/if}};">{{item.name}}</h4>
           </div>
           <div class="item-controls">
             <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>

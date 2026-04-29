@@ -67,7 +67,8 @@
     },
     "trait": {
       "description": "",
-      "type": "conditional"
+      "type": "conditional",
+      "isActive": false
     },
     "ability": {
       "description": "",

@@ -8,14 +8,14 @@
       <input type="hidden" name="weaponDamage" value="{{weaponDamage}}"/>
     {{else}}
       <select name="actionName">
-        <option value="ENGAGE">ENGAGE</option>
-        <option value="MANEUVER">MANEUVER</option>
-        <option value="INTERFACE">INTERFACE</option>
-        <option value="TRACE">TRACE</option>
-        <option value="PRIME">PRIME</option>
-        <option value="WARD">WARD</option>
-        <option value="DRIFT">DRIFT</option>
-        <option value="Custom">Custom</option>
+        <option value="ENGAGE" {{#if (eq actionName "ENGAGE")}}selected{{/if}}>ENGAGE</option>
+        <option value="MANEUVER" {{#if (eq actionName "MANEUVER")}}selected{{/if}}>MANEUVER</option>
+        <option value="INTERFACE" {{#if (eq actionName "INTERFACE")}}selected{{/if}}>INTERFACE</option>
+        <option value="TRACE" {{#if (eq actionName "TRACE")}}selected{{/if}}>TRACE</option>
+        <option value="PRIME" {{#if (eq actionName "PRIME")}}selected{{/if}}>PRIME</option>
+        <option value="WARD" {{#if (eq actionName "WARD")}}selected{{/if}}>WARD</option>
+        <option value="DRIFT" {{#if (eq actionName "DRIFT")}}selected{{/if}}>DRIFT</option>
+        <option value="Custom" {{#if (eq actionName "Custom")}}selected{{/if}}>Custom</option>
       </select>
     {{/if}}
   </div>

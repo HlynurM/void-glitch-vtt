@@ -9,6 +9,7 @@ export class ActionDialog extends Dialog {
         guile: actor.system.attributes.guile.value
       },
       defaultAttribute: options.defaultAttribute || "edge",
+      actionName: options.actionName || "",
       weaponName: options.weaponName,
       weaponDamage: options.weaponDamage,
       weaponTags: options.weaponTags
@@ -52,93 +53,96 @@ export class ActionDialog extends Dialog {
     const spendStrain = form.spendStrain.checked;
     const spendCorruption = form.spendCorruption.checked;
 
-    // Calculate Final Risk (min 3, max 6)
-    let finalRisk = Math.max(3, Math.min(6, baseRisk + positionMod));
+    try {
+      // Calculate Final Risk (min 3, max 6)
+      let finalRisk = Math.max(3, Math.min(6, parseInt(baseRisk) + parseInt(positionMod)));
 
-    // Calculate Pool Size
-    const attributeValue = actor.system.attributes[attributeKey].value || 1;
-    let poolSize = attributeValue + bonusDice;
-    
-    let costs = [];
-    if (spendStrain) {
-      poolSize += 1;
-      costs.push("1 Strain");
-      // Apply Strain cost (we will update the actor document)
-      const currentStrain = actor.system.tracks.strain.value;
-      await actor.update({ "system.tracks.strain.value": currentStrain + 1 });
+      // Calculate Pool Size
+      const attributeValue = parseInt(actor.system.attributes[attributeKey].value) || 1;
+      let poolSize = attributeValue + parseInt(bonusDice);
+      
+      let costs = [];
+      if (spendStrain) {
+        poolSize += 1;
+        costs.push("1 Strain");
+        // Apply Strain cost (we will update the actor document)
+        const currentStrain = parseInt(actor.system.tracks.strain.value) || 0;
+        await actor.update({ "system.tracks.strain.value": currentStrain + 1 });
+      }
+      if (spendCorruption) {
+        poolSize += 1;
+        costs.push("1 Corruption");
+        // Apply Corruption cost
+        const currentCorruption = parseInt(actor.system.tracks.corruption.value) || 0;
+        await actor.update({ "system.tracks.corruption.value": currentCorruption + 1 });
+      }
+
+      // Ensure pool is at least 1 die
+      poolSize = Math.max(poolSize, 1);
+
+      // Roll the dice
+      const rollExpression = `${poolSize}d6cs>=${finalRisk}`;
+      const roll = new Roll(rollExpression);
+      await roll.evaluate({async: true});
+
+      // Process Results
+      const diceResults = roll.terms[0].results.map(r => r.result);
+      let hits = 0;
+      let flares = 0;
+
+      diceResults.forEach(r => {
+        if (r >= finalRisk) hits++;
+        if (isVoidTainted && (r === 1 || r === 6)) flares++;
+      });
+
+      // Determine Outcome Ladder
+      let outcome = "GLITCH";
+      let advantagePicks = 0;
+
+      if (hits === 1) {
+        outcome = "SPARK";
+      } else if (hits === 2) {
+        outcome = "SURGE";
+        advantagePicks = 2;
+      } else if (hits >= 3) {
+        outcome = "NOVA";
+        advantagePicks = 3;
+      }
+
+      // Render Chat Message
+      const templateData = {
+        actor: actor,
+        actionName: actionName,
+        attribute: attributeKey.toUpperCase(),
+        poolSize: poolSize,
+        risk: finalRisk,
+        costs: costs.join(" & "),
+        dice: diceResults,
+        hits: hits,
+        flares: flares,
+        outcome: outcome,
+        advantagePicks: advantagePicks,
+        isVoidTainted: isVoidTainted,
+        weaponDamage: form.weaponDamage ? parseInt(form.weaponDamage.value) : null
+      };
+
+      const chatHtml = await renderTemplate("systems/void-glitch/templates/chat/action-result.html", templateData);
+
+      let chatData = {
+        user: game.user.id,
+        speaker: ChatMessage.getSpeaker({ actor: actor }),
+        content: chatHtml,
+        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        rolls: [roll],
+        sound: CONFIG.sounds.dice
+      };
+
+      ChatMessage.create(chatData);
+
+      return { hits, outcome, flares };
+    } catch (e) {
+      console.error("VOID // GLITCH | Dice Roller Error:", e);
+      ui.notifications.error("There was an error processing the roll. Check the console (F12) for details.");
     }
-    if (spendCorruption) {
-      poolSize += 1;
-      costs.push("1 Corruption");
-      // Apply Corruption cost
-      const currentCorruption = actor.system.tracks.corruption.value;
-      await actor.update({ "system.tracks.corruption.value": currentCorruption + 1 });
-    }
-
-    // Ensure pool is at least 1 die. If 0 or less, maybe roll 2 and take lowest? 
-    // The rules don't explicitly mention 0 dice, assuming min 1 die.
-    poolSize = Math.max(poolSize, 1);
-
-    // Roll the dice
-    // Using standard Foundry Roll: poolSize d6, count successes >= finalRisk
-    const rollExpression = `${poolSize}d6cs>=${finalRisk}`;
-    const roll = new Roll(rollExpression);
-    await roll.evaluate({async: true});
-
-    // Process Results
-    const diceResults = roll.terms[0].results.map(r => r.result);
-    let hits = 0;
-    let flares = 0;
-
-    diceResults.forEach(r => {
-      if (r >= finalRisk) hits++;
-      if (isVoidTainted && (r === 1 || r === 6)) flares++;
-    });
-
-    // Determine Outcome Ladder
-    let outcome = "GLITCH";
-    let advantagePicks = 0;
-
-    if (hits === 1) {
-      outcome = "SPARK";
-    } else if (hits === 2) {
-      outcome = "SURGE";
-      advantagePicks = 2;
-    } else if (hits >= 3) {
-      outcome = "NOVA";
-      advantagePicks = 3;
-    }
-
-    // Render Chat Message
-    const templateData = {
-      actor: actor,
-      actionName: actionName,
-      attribute: attributeKey.toUpperCase(),
-      poolSize: poolSize,
-      risk: finalRisk,
-      costs: costs.join(" & "),
-      dice: diceResults,
-      hits: hits,
-      flares: flares,
-      outcome: outcome,
-      advantagePicks: advantagePicks,
-      isVoidTainted: isVoidTainted,
-      weaponDamage: form.weaponDamage ? parseInt(form.weaponDamage.value) : null
-    };
-
-    const chatHtml = await renderTemplate("systems/void-glitch/templates/chat/action-result.html", templateData);
-
-    let chatData = {
-      user: game.user.id,
-      speaker: ChatMessage.getSpeaker({ actor: actor }),
-      content: chatHtml,
-      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-      rolls: [roll],
-      sound: CONFIG.sounds.dice
-    };
-
-    ChatMessage.create(chatData);
-
-    return { hits, outcome, flares };
   }
 }

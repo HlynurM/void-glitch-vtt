@@ -66,6 +66,15 @@ export class VoidGlitchAssetSheet extends ActorSheet {
       this.actor.deleteEmbeddedDocuments("Item", [li.data("itemId")]);
       li.slideUp(200, () => this.render(false));
     });
+
+    html.find('.trait-toggle').click(async ev => {
+      ev.preventDefault();
+      const li = $(ev.currentTarget).parents(".item");
+      const item = this.actor.items.get(li.data("itemId"));
+      if (item) {
+        await item.update({ "system.isActive": !item.system.isActive });
+      }
+    });
   }
 
   async _onRoll(event) {
@@ -83,6 +92,12 @@ export class VoidGlitchAssetSheet extends ActorSheet {
         weaponName: item.name,
         weaponDamage: item.system.damage,
         weaponTags: item.system.tags
+      };
+      await ActionDialog.create(this.actor, options);
+    } else if (dataset.rollType === "move") {
+      const options = {
+        actionName: dataset.move,
+        defaultAttribute: "edge"
       };
       await ActionDialog.create(this.actor, options);
     }
