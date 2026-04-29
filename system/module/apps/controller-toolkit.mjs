@@ -35,7 +35,7 @@ export class ControllerToolkit extends Application {
     switch(type) {
       case "oracle":
         const oracleRoll = new Roll("1d6");
-        await oracleRoll.evaluate({async:true});
+        await oracleRoll.evaluate();
         const res = oracleRoll.total;
         let answer = "Hell No", number = "None", scale = "Minimal", condition = "Broken", vibes = "Hostile";
         if(res >= 2 && res <= 3) { answer = "No"; number = "A few"; scale = "Moderate"; condition = "Damaged"; vibes = "Wary"; }
@@ -84,8 +84,25 @@ export class ControllerToolkit extends Application {
 }
 
 // Hook to add a button to the sidebar/scene controls to open the Toolkit
+// V13 changed the hook signature — controls is now a plain object keyed by control name
 Hooks.on('getSceneControlButtons', (controls) => {
-  if (game.user.isGM) {
+  if (!game.user.isGM) return;
+  
+  // V13+: controls is an object. V12 and earlier: controls is an array.
+  if (typeof controls === "object" && !Array.isArray(controls)) {
+    // V13 style
+    if (controls.tokens) {
+      controls.tokens.tools ??= {};
+      controls.tokens.tools["controller-toolkit"] = {
+        name: "controller-toolkit",
+        title: "Controller Toolkit",
+        icon: "fas fa-terminal",
+        button: true,
+        onClick: () => new ControllerToolkit().render(true)
+      };
+    }
+  } else {
+    // V12 style (array)
     const tokenControls = controls.find(c => c.name === "token");
     if (tokenControls) {
       tokenControls.tools.push({
@@ -93,9 +110,7 @@ Hooks.on('getSceneControlButtons', (controls) => {
         title: "Controller Toolkit",
         icon: "fas fa-terminal",
         button: true,
-        onClick: () => {
-          new ControllerToolkit().render(true);
-        }
+        onClick: () => new ControllerToolkit().render(true)
       });
     }
   }

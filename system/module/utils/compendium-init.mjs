@@ -1,11 +1,16 @@
 export async function initializeBlueprints() {
   if (!game.user.isGM) return; // Only GM runs initialization
 
-  // Check if we have already initialized blueprints by looking for "Striker"
-  const existingStriker = game.items.find(i => i.type === "blueprint" && i.name === "Striker");
-  if (existingStriker) return; // Already generated
+  // Check if ALL 5 core blueprints exist. If any are missing, regenerate all missing ones.
+  const blueprintNames = ["Striker", "Bioforge", "Savant", "Infiltrator", "Handler"];
+  const existingNames = game.items
+    .filter(i => i.type === "blueprint")
+    .map(i => i.name);
+  
+  const missingNames = blueprintNames.filter(n => !existingNames.includes(n));
+  if (missingNames.length === 0) return; // All blueprints already exist
 
-  console.log("VOID // GLITCH | Auto-generating Core Blueprints...");
+  console.log(`VOID // GLITCH | Auto-generating missing Blueprints: ${missingNames.join(", ")}`);
 
   const blueprintsData = [
     {
@@ -55,6 +60,7 @@ export async function initializeBlueprints() {
     }
   ];
 
-  await Item.createDocuments(blueprintsData);
-  ui.notifications.info("VOID // GLITCH: Core Blueprints have been automatically generated in your Items tab!");
+  const toCreate = blueprintsData.filter(b => missingNames.includes(b.name));
+  await Item.createDocuments(toCreate);
+  ui.notifications.info(`VOID // GLITCH: Generated missing Blueprints: ${missingNames.join(", ")}`);
 }
