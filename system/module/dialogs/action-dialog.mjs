@@ -83,7 +83,7 @@ export class ActionDialog extends Dialog {
       // Roll the dice
       const rollExpression = `${poolSize}d6cs>=${finalRisk}`;
       const roll = new Roll(rollExpression);
-      await roll.evaluate({async: true});
+      await roll.evaluate(); // V12 removed {async: true}
 
       // Process Results
       const diceResults = roll.terms[0].results.map(r => r.result);
@@ -132,10 +132,16 @@ export class ActionDialog extends Dialog {
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({ actor: actor }),
         content: chatHtml,
-        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         rolls: [roll],
         sound: CONFIG.sounds.dice
       };
+      
+      // Support V11 and V12 chat types
+      if (CONST.CHAT_MESSAGE_TYPES?.ROLL) {
+        chatData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+      } else if (CONST.CHAT_MESSAGE_STYLES?.ROLL) {
+        chatData.style = CONST.CHAT_MESSAGE_STYLES.ROLL;
+      }
 
       ChatMessage.create(chatData);
 
