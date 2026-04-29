@@ -1,0 +1,98 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="RIG Name"/></h1>
+      
+      <div class="npc-stats">
+        <label>Creator:</label>
+        <input name="system.details.creator" type="text" value="{{system.details.creator}}" placeholder="Savant's Name"/>
+
+        <label>Tier:</label>
+        <input name="system.details.tier" type="number" value="{{system.details.tier}}" min="1" max="4"/>
+        
+        <label>Stage:</label>
+        <select name="system.details.stage">
+          {{#select system.details.stage}}
+          <option value="Intact">Intact</option>
+          <option value="Shaken">Shaken</option>
+          <option value="Critical">Critical</option>
+          <option value="Down">Down</option>
+          {{/select}}
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="config">Configuration</a>
+    <a class="item" data-tab="details">Details</a>
+  </nav>
+
+  <section class="sheet-body">
+    
+    <div class="tab config" data-group="primary" data-tab="config">
+      
+      <div class="tracks-grid">
+        <div class="track">
+          <label>HULL (Damage)</label>
+          <div class="track-boxes">
+            {{trackBoxes system.tracks.hull.value system.tracks.hull.max "hull"}}
+          </div>
+        </div>
+      </div>
+
+      <hr/>
+
+      <h2>RIG Modes</h2>
+      <div class="grid grid-2col">
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.modes.sensor" {{checked system.modes.sensor}}/> SENSOR (Detect, scan, surveil)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.modes.stealth" {{checked system.modes.stealth}}/> STEALTH (Silent, hidden, masked)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.modes.network" {{checked system.modes.network}}/> NETWORK (Comms, relay, hack)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.modes.mobility" {{checked system.modes.mobility}}/> MOBILITY (Move, fly, climb)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.modes.manipulator" {{checked system.modes.manipulator}}/> MANIPULATOR (Interact, carry)
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.modes.power" {{checked system.modes.power}}/> POWER (Amplify duration)
+        </label>
+        
+        <label class="checkbox-label" style="border-top: 1px solid #444; padding-top: 5px;">
+          <input type="checkbox" name="system.modes.weapon" {{checked system.modes.weapon}}/> WEAPON (Kinetic, blast)
+        </label>
+        <div style="border-top: 1px solid #444; padding-top: 5px;">
+          {{#if system.modes.weapon}}
+            <label>Weapon Stacks (Damage):</label>
+            <input type="number" name="system.stacks.weapon" value="{{system.stacks.weapon}}" min="1" max="5" style="width: 50px;"/>
+          {{/if}}
+        </div>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="system.modes.armor" {{checked system.modes.armor}}/> ARMOR (Plate, shield)
+        </label>
+        <div>
+          {{#if system.modes.armor}}
+            <label>Armor Stacks:</label>
+            <input type="number" name="system.stacks.armor" value="{{system.stacks.armor}}" min="1" max="5" style="width: 50px;"/>
+          {{/if}}
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tab details" data-group="primary" data-tab="details">
+      <h3>Description</h3>
+      {{editor enrichedDescription target="system.details.description" button=true owner=owner editable=editable}}
+    </div>
+
+  </section>
+
+</form>

@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["asset", "npc", "environment"],
+    "types": ["asset", "npc", "environment", "rig"],
     "asset": {
       "attributes": {
         "edge": { "value": 1 },
@@ -55,6 +55,31 @@
         "power": 1,
         "tier": 1,
         "stage": "Intact"
+      }
+    },
+    "rig": {
+      "tracks": {
+        "hull": { "value": 0, "max": 4 }
+      },
+      "modes": {
+        "sensor": false,
+        "stealth": false,
+        "network": false,
+        "mobility": false,
+        "manipulator": false,
+        "armor": false,
+        "weapon": false,
+        "power": false
+      },
+      "stacks": {
+        "weapon": 1,
+        "armor": 1
+      },
+      "details": {
+        "description": "",
+        "tier": 1,
+        "stage": "Intact",
+        "creator": ""
       }
     }
   },

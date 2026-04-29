@@ -44,6 +44,26 @@ export class VoidGlitchNpcSheet extends ActorSheet {
       this.actor.deleteEmbeddedDocuments("Item", [li.data("itemId")]);
       li.slideUp(200, () => this.render(false));
     });
+
+    html.find('.item-broadcast').click(async ev => {
+      ev.preventDefault();
+      const li = $(ev.currentTarget).parents(".item");
+      const item = this.actor.items.get(li.data("itemId"));
+      if (item) {
+        const templateData = {
+          actor: this.actor,
+          item: item,
+          isWeapon: item.type === "weapon"
+        };
+        const chatHtml = await renderTemplate("systems/void-glitch/templates/chat/item-broadcast.html", templateData);
+        let chatData = {
+          user: game.user.id,
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          content: chatHtml
+        };
+        ChatMessage.create(chatData);
+      }
+    });
   }
 
   async _onTrackBoxClick(event) {
